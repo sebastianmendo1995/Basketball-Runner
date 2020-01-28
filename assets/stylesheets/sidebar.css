@@ -1,0 +1,56 @@
+.sidebar {
+  margin: 0;
+  padding: 0;
+  width: 100px;
+  background-color: rgb(6, 52, 105);
+  position: fixed;
+  height: 100%;
+  overflow: auto;
+  justify-content: space-around;
+}
+
+
+.sidebar a {
+  display: block;
+  color: rgb(230, 233, 30);
+  padding: 16px;
+  text-decoration: none;
+  text-align: center;
+}
+ 
+.sidebar a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.sidebar a:hover:not(.active) {
+  background-color: rgb(3, 36, 107);
+  color: white;
+}
+
+div.content {
+  margin-left: 100px;
+  padding: 1px 16px;
+  height: 1000px;
+  background-image: url("../images/kobe-bg.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+@media screen and (max-width: 700px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .sidebar a {float: left;}
+  div.content {margin-left: 0;}
+}
+
+@media screen and (max-width: 400px) {
+  .sidebar a {
+    text-align: center;
+    float: none;
+  }
+}
