@@ -1,0 +1,253 @@
+.game-container {
+  position: relative;
+  border: 0;
+  height: 400px;
+  width: 800px;
+  display: inline-block;
+  margin-left: 50px;
+  margin-top: 350px;
+  bottom: 0;
+  background-image: url('../images/scrolling-background.jpeg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+#game-canvas {
+  position: absolute;
+  background: transparent;
+  border: 2px solid #C8C2E2;
+  z-index: 2;
+  top: 0;
+  left: 0;
+}
+
+#foreground-canvas {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+}
+
+.comment-container{
+    margin-left: 50px;
+    max-width: 800px;
+    padding-top: 70px;
+}
+
+.comment-container p{
+  font-family: 'Bangers', cursive;
+  color: #fff;
+  text-align: center;
+  width: 100%;
+  font-size: 50px;
+}
+
+.info-article{
+  position: absolute;
+  z-index: 6;
+  top: 12px;
+  left: 100px;
+  background: #fff;
+  width: 600px;
+  border-radius: 5px;
+  font-size: 13px;
+  color: #222;
+  padding: 5px 10px;
+  position: relative;
+  display: flex;
+}
+
+.info-article > section {
+  width: 45%;
+  padding: 15px 15px;
+  text-align: left;
+}
+
+.info-article > section > img {
+  height: 100px;
+}
+
+.info-article > section > h2 {
+  font-size: 32px;
+  letter-spacing: 1px;
+  font-family: 'VT323', monospace;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+  border-bottom: 1px  solid #aaa;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  color: #fcff6e;
+}
+
+.info-article > section > p {
+  padding-top: 10px;
+  font-size: 15px;
+  font-family: sans-serif;
+  line-height: 1.4;
+  text-align: justify;
+}
+
+.info-article > section > button{
+  position: absolute;
+  font-weight: bold;
+  right: 5px;
+  top: 5px;
+  background-color: #fcff6e;
+  border: 1px solid black;
+  border-radius: 20px;
+}
+
+.info-article > section > button:hover{
+  background-color: #f5e400d5;
+}
+
+.main-menu-section {
+  position: absolute;
+  z-index: 4;
+  background: rgba(0, 0, 0, 0.8);
+  top: 2px;
+  left: 2px;
+  bottom: -2px;
+  right: -2px;
+  display: block;
+}
+
+.game-name{
+  color: #fff;
+  font-size: 40px;
+  font-family: 'VT323', monospace;
+  letter-spacing: 2px;
+  text-align: center;
+  margin-top: 20px 0;
+  margin: 20px;
+}
+
+.high-score {
+  border: 1px solid #ccc;
+  max-width: 300px;
+  margin: 10px auto;
+  padding: 10px;
+  font-family: sans-serif;
+}
+
+.high-score h2 {
+  font-size: 28px;
+  text-align: center;
+  border-bottom: 1px solid #fff;
+  color: #fff;
+}
+
+.high-score li {
+  color: #fff;
+  font-size: 20px;
+  letter-spacing: 1px;
+  margin: 3px;
+}
+
+.high-scores {
+  text-align: left;
+  width: 220px;
+}
+
+.right-score{
+  float: right;
+}
+
+.menu-buttons {
+  width: 782px;
+  margin: 0 auto;
+  padding: 10px;
+  position: absolute;
+  z-index: 5;
+  bottom: 0;
+  display: flex;
+  justify-content: space-around;
+  z-index: 5;
+}
+
+.menu-buttons button{
+  font-family: sans-serif;
+  background: none;
+  border: none;
+  letter-spacing: 1px;
+  padding: 10px 18px;
+  margin: 0 20px;
+  width: 100px;
+  font-size: 24px;
+  text-shadow: 0 0 8px black;
+
+}
+
+#music-button{
+  color: yellow;
+}
+
+#start-button{
+  color: blue;
+}
+
+#info-button{
+  color: red;
+}
+
+.game-over{
+  display: block;
+  position: absolute;
+  z-index: 4;
+  color: white;
+  font-family: sans-serif;
+  font-size: 20px;
+}
+
+.game-over > button {
+  font-size: 24px;
+  color: #FEF86C;
+  position: absolute;
+  left: 35px;
+  top: 21px;
+  text-shadow: 0 0 4px black;
+}
+
+.game-over > button:hover {
+  text-shadow: 0 0 1px black;
+}
+
+.high-score-form {
+  position: absolute;
+  left: 400px;
+  transform: translateX(-50%);
+  top: 30px;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+.high-score-form > label {
+  font-size: 24px;
+}
+
+.high-score-form input {
+  background: rgba(185,185,185,.3);
+  border: 1px solid black;
+  color: black;
+  padding: 2px 8px;
+  text-align: left;
+  width: 100px;
+  font-size: 20px;
+}
+
+.high-score-form > button {
+  color: #FEF86C;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  letter-spacing: 1px;
+}
+
+.high-score-form > button:hover {
+  color: #fffc9f;
+}
+
+.hidden{
+  display: none;
+}
+
+.close {
+  display: none;
+}
