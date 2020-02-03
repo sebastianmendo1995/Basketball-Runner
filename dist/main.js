@@ -17779,7 +17779,7 @@ var Menu = {
         gameMuteButton.className = 'mute-button toggled';
       } else {
         musicButton.className = 'music-button';
-        gameMuteButton.className = 'mute-button toggled';
+        gameMuteButton.className = 'mute-button';
       }
 
       playSelectSound();
