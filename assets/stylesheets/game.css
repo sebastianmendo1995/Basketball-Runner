@@ -142,6 +142,7 @@
   font-size: 20px;
   letter-spacing: 1px;
   margin: 3px;
+  padding: 5px 0;
 }
 
 .high-scores {
@@ -202,10 +203,10 @@
 .game-over > button {
   font-size: 24px;
   color: #FEF86C;
-  position: absolute;
   left: 35px;
-  top: 21px;
   text-shadow: 0 0 4px black;
+  border: none;
+  background: none;
 }
 
 .game-over > button:hover {
@@ -218,6 +219,9 @@
   transform: translateX(-50%);
   top: 30px;
   text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  text-align: center;
+  top: 200px;
+  width: 300px;
 }
 
 .high-score-form > label {
@@ -230,18 +234,44 @@
   color: black;
   padding: 2px 8px;
   text-align: left;
-  width: 100px;
+  width: 200px;
   font-size: 20px;
+  border-radius: 5px;
+  margin-top: 10px;
 }
 
 .high-score-form > button {
-  color: #FEF86C;
-  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-  letter-spacing: 1px;
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #000;
+  background-color: rgb(238, 215, 13);
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+  margin-top: 10px;
+}
+
+.high-score-form > button:hover {
+  background-color: #3e8e41
+}
+
+.high-score-form > button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
 }
 
 .high-score-form > button:hover {
   color: #fffc9f;
+}
+
+.toggled {
+  text-decoration: line-through;
 }
 
 .hidden{

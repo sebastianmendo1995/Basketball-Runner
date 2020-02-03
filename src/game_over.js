@@ -1,6 +1,6 @@
 const drawGameOver = (ctx) => {
     const text1 = 'GAME OVER';
-    const text2 = 'Press \'s\' to reset the game';
+    const text2 = 'Press \'r\' to reset the game';
     ctx.font = '48px VT323';
     ctx.fillStyle = '#fef86c';
     ctx.textAlign = 'center';

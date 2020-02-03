@@ -1,7 +1,7 @@
 const PLAYER_HITBOX_OFFSET = {
     posX: 3,
     posY: 9,
-    sizeX: 110,
+    sizeX: 60,
     sizeY: 150,
 };
 
@@ -9,7 +9,7 @@ class Player {
     constructor(options) {
         this.position = options.position;
         this.character = new Image();
-        this.character.src = "../assets/images/baller-sprites2.png";
+        this.character.src = "../assets/images/baller-sprites3.png";
         this.currentFrame = 0;
         this.cols = 7;
         this.refreshFrame = 0;
@@ -74,7 +74,7 @@ class Player {
             y = 500
             this.width = 150;
             this.height = 250;
-            this.cols = 14
+            this.cols = 19;
         } else {
             x = 379;
             y = 39;

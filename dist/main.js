@@ -17344,7 +17344,27 @@ document.addEventListener('DOMContentLoaded', function () {
   var canvasContext = gameCanvas.getContext('2d');
   var foregroundCanvas = document.getElementById('foreground-canvas');
   var foregroundCanvasContext = foregroundCanvas.getContext('2d');
-  var game = new Game(canvasContext, gameCanvas, foregroundCanvasContext);
+  var firebaseConfig = {
+    apiKey: "AIzaSyBa0Ax2QQvHr-ATihGli8IP9UJ0M67Eh_k",
+    authDomain: "basketball-runner.firebaseapp.com",
+    databaseURL: "https://basketball-runner.firebaseio.com",
+    projectId: "basketball-runner",
+    storageBucket: "basketball-runner.appspot.com",
+    messagingSenderId: "215548747807",
+    appId: "1:215548747807:web:705d17258f4a02bf8f352a",
+    measurementId: "G-RLMEW16HV2"
+  }; // Initialize Firebase
+
+  firebase.initializeApp(firebaseConfig); // firebase.analytics();
+
+  var database = firebase.database(); // let ref = database.ref('scores');
+  // let data = {
+  //   name: "Abel",
+  //   score: 10500
+  // }
+  // ref.push(data)
+
+  var game = new Game(database, canvasContext, gameCanvas, foregroundCanvasContext);
   game.openMenu();
 });
 
@@ -17380,7 +17400,7 @@ var Obstacle = __webpack_require__(/*! ./obstacle */ "./src/obstacle.js");
 var DEFENDER_HITBOX_OFFSET = {
   posX: 20,
   posY: 20,
-  sizeX: 100,
+  sizeX: 80,
   sizeY: 100
 };
 
@@ -17441,12 +17461,15 @@ var Menu = __webpack_require__(/*! ./menu */ "./src/menu.js");
 
 var Background = __webpack_require__(/*! ./background */ "./src/background.js");
 
+var Score = __webpack_require__(/*! ./score */ "./src/score.js");
+
 var Game =
 /*#__PURE__*/
 function () {
-  function Game(ctx, gameCanvas, foregroundCtx) {
+  function Game(database, ctx, gameCanvas, foregroundCtx) {
     _classCallCheck(this, Game);
 
+    this.database = database;
     this.ctx = ctx;
     this.gameCanvas = gameCanvas;
     this.player = new Player({
@@ -17457,9 +17480,11 @@ function () {
     this.nextSpawn = this.spawnRate + Math.floor(Math.random() * 25);
     this.obstacles = [];
     this.muteMusic = false;
+    this.score = new Score();
     this.jump = this.jump.bind(this);
     this.draw = this.draw.bind(this);
     this.resetGame = this.resetGame.bind(this);
+    this.highScoreInput = document.getElementsByClassName("high-score-form")[0];
     this.setSounds();
     this.createBackground(foregroundCtx);
     this.setButtonListeners();
@@ -17469,6 +17494,8 @@ function () {
   _createClass(Game, [{
     key: "openMenu",
     value: function openMenu() {
+      this.score.setScore(this.database);
+
       if (!this.muteMusic) {
         this.menuMusic.volume = 0.7;
         this.menuMusic.play();
@@ -17578,6 +17605,7 @@ function () {
       this.canReset = false;
       this.paused = false;
       this.defenders = 0;
+      this.score.score = 0;
       this.player.position = [100, 210];
       this.obstacles = [];
       this.maxObstacles = 3;
@@ -17588,6 +17616,15 @@ function () {
     value: function stopGame() {
       var _this = this;
 
+      var highScore = this.score.checkHighScore(this.database);
+
+      if (highScore === true) {
+        this.highScoreInput.className = 'high-score-form';
+      }
+
+      setTimeout(function () {
+        drawGameOver(_this.ctx);
+      }, 700);
       this.backgroundMusic.pause();
       this.gameOverSound.currentTime = 0;
       this.gameOverSound.volume = 0.8;
@@ -17603,7 +17640,7 @@ function () {
   }, {
     key: "resetGame",
     value: function resetGame(e) {
-      if (e.key === 's' && this.canReset && !this.paused) {
+      if (e.key === 'r' && this.canReset && !this.paused) {
         e.preventDefault();
         this.start();
       }
@@ -17634,6 +17671,7 @@ function () {
           this.obstacles.splice(deleteIdx, 1);
         }
 
+        this.score.draw(this.ctx);
         this.foreground.draw();
       }
     }
@@ -17655,7 +17693,7 @@ module.exports = Game;
 
 var drawGameOver = function drawGameOver(ctx) {
   var text1 = 'GAME OVER';
-  var text2 = 'Press \'s\' to reset the game';
+  var text2 = 'Press \'r\' to reset the game';
   ctx.font = '48px VT323';
   ctx.fillStyle = '#fef86c';
   ctx.textAlign = 'center';
@@ -17680,11 +17718,15 @@ module.exports = drawGameOver;
 var closeMainMenu = function closeMainMenu() {
   var element = document.getElementsByClassName('main-menu-section')[0];
   element.className = 'main-menu-section hidden';
+  var gameOver = document.getElementsByClassName('game-over')[0];
+  gameOver.className = 'game-over';
 };
 
 var openMainMenu = function openMainMenu() {
   var element = document.getElementsByClassName('main-menu-section')[0];
   element.className = 'main-menu-section';
+  var gameOver = document.getElementsByClassName('game-over')[0];
+  gameOver.className = 'game-over close';
 };
 
 var Menu = {
@@ -17694,6 +17736,8 @@ var Menu = {
     var infoButton = document.getElementById('info-button');
     var closeInfo = document.getElementById('close-info');
     var selectSound = new Audio('../assets/sounds/select.mp3');
+    var gameMuteButton = document.getElementById('mute-button');
+    var gameMenuButton = document.getElementById('menu-button');
     selectSound.volume = 0.2;
 
     var openInfo = function openInfo(e) {
@@ -17729,6 +17773,19 @@ var Menu = {
       document.getElementById('game-canvas').focus();
     };
 
+    var muteToggle = function muteToggle() {
+      if (game.toggleMute()) {
+        musicButton.className = 'music-button toggled';
+        gameMuteButton.className = 'mute-button toggled';
+      } else {
+        musicButton.className = 'music-button';
+        gameMuteButton.className = 'mute-button toggled';
+      }
+
+      playSelectSound();
+      document.getElementById('game-canvas').focus();
+    };
+
     game.gameCanvas.addEventListener('keydown', function (e) {
       if (e.code === 'Escape' && game.gamePlaying) {
         e.preventDefault();
@@ -17737,6 +17794,9 @@ var Menu = {
     });
     infoButton.addEventListener('click', openInfo);
     closeInfo.addEventListener('click', openInfo);
+    musicButton.addEventListener('click', muteToggle);
+    gameMenuButton.addEventListener('click', backToMenu);
+    gameMuteButton.addEventListener('click', muteToggle);
     startButton.addEventListener('click', function (e) {
       closeMainMenu();
       playSelectSound();
@@ -17837,7 +17897,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var PLAYER_HITBOX_OFFSET = {
   posX: 3,
   posY: 9,
-  sizeX: 110,
+  sizeX: 60,
   sizeY: 150
 };
 
@@ -17849,7 +17909,7 @@ function () {
 
     this.position = options.position;
     this.character = new Image();
-    this.character.src = "../assets/images/baller-sprites2.png";
+    this.character.src = "../assets/images/baller-sprites3.png";
     this.currentFrame = 0;
     this.cols = 7;
     this.refreshFrame = 0;
@@ -17911,7 +17971,7 @@ function () {
         y = 500;
         this.width = 150;
         this.height = 250;
-        this.cols = 14;
+        this.cols = 19;
       } else {
         x = 379;
         y = 39;
@@ -17954,6 +18014,117 @@ function () {
 }();
 
 module.exports = Player;
+
+/***/ }),
+
+/***/ "./src/score.js":
+/*!**********************!*\
+  !*** ./src/score.js ***!
+  \**********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Score =
+/*#__PURE__*/
+function () {
+  function Score() {
+    _classCallCheck(this, Score);
+
+    this.score = 0;
+    this.multiplier = [1, 3, 7];
+    this.time = 0;
+    this.timer();
+  }
+
+  _createClass(Score, [{
+    key: "setScore",
+    value: function setScore(database) {
+      var ref = database.ref('scores');
+      ref.on('value', this.gotData, this.errData);
+    }
+  }, {
+    key: "gotData",
+    value: function gotData(data) {
+      var scoreboard = document.getElementById('high-scores'); //selecting the ul that will contain all the high scores
+
+      while (scoreboard.firstChild) {
+        scoreboard.removeChild(scoreboard.firstChild);
+      }
+
+      var scores = data.val();
+      var keys = Object.keys(data.val());
+
+      for (var i = 0; i < keys.length; i++) {
+        var name = scores[keys[i]].name;
+        var score = scores[keys[i]].score;
+        var liScore = document.createElement('li');
+        liScore.innerHTML = "".concat(name, " <span class=\"right-score\">").concat(score, "</span>");
+        scoreboard.appendChild(liScore);
+      }
+    }
+  }, {
+    key: "errData",
+    value: function errData(err) {
+      console.log('Firebase error!!!');
+      console.log(err);
+    }
+  }, {
+    key: "draw",
+    value: function draw(ctx) {
+      var text = "Score: ".concat(this.score);
+      ctx.font = '20px sans-serif';
+      ctx.strokeStyle = 'black';
+      ctx.lineWidth = 4;
+      ctx.fillStyle = 'white';
+      ctx.textAlign = 'left';
+      ctx.strokeText(text, 640, 40);
+      ctx.fillText(text, 640, 40);
+      this.increaseScore();
+    }
+  }, {
+    key: "increaseScore",
+    value: function increaseScore() {
+      if (this.multiplier < 20) {
+        this.score += this.multiplier[0];
+      } else if (this.multiplier < 40) {
+        this.score += this.multiplier[1];
+      } else {
+        this.score += this.multiplier[2];
+      }
+    }
+  }, {
+    key: "checkHighScore",
+    value: function checkHighScore(database) {
+      var scores = document.querySelectorAll('.right-score');
+      var arrScores = Array.prototype.slice.call(scores);
+
+      if (arrScores[4].innerHTML < this.score) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }, {
+    key: "timer",
+    value: function timer() {
+      var _this = this;
+
+      setInterval(function () {
+        _this.time += 1;
+      }, 1000);
+    }
+  }]);
+
+  return Score;
+}();
+
+module.exports = Score;
 
 /***/ })
 

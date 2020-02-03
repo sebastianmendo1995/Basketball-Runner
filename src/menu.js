@@ -1,11 +1,15 @@
 const closeMainMenu = () => {
     const element = document.getElementsByClassName('main-menu-section')[0];
     element.className = 'main-menu-section hidden'
+    const gameOver = document.getElementsByClassName('game-over')[0]
+    gameOver.className = 'game-over'
 }
 
 const openMainMenu = () => {
     const element = document.getElementsByClassName('main-menu-section')[0];
     element.className = 'main-menu-section'
+    const gameOver = document.getElementsByClassName('game-over')[0]
+    gameOver.className = 'game-over close'
 }
 
 const Menu = {
@@ -15,6 +19,9 @@ const Menu = {
         const infoButton = document.getElementById('info-button');
         const closeInfo = document.getElementById('close-info');
         const selectSound = new Audio('../assets/sounds/select.mp3');
+        const gameMuteButton = document.getElementById('mute-button');
+        const gameMenuButton = document.getElementById('menu-button');
+
         selectSound.volume = 0.2;
         const openInfo = (e) => {
             const infoArticle = document.getElementsByClassName('info-article')[0];
@@ -48,6 +55,18 @@ const Menu = {
             document.getElementById('game-canvas').focus();
         };
 
+        const muteToggle = () => {
+            if (game.toggleMute()) {
+                musicButton.className = 'music-button toggled';
+                gameMuteButton.className = 'mute-button toggled'
+            } else {
+                musicButton.className = 'music-button';
+                gameMuteButton.className = 'mute-button toggled'
+            }
+            playSelectSound();
+            document.getElementById('game-canvas').focus();
+        }
+
         game.gameCanvas.addEventListener('keydown', (e) => {
             if (e.code === 'Escape' && game.gamePlaying) {
                 e.preventDefault();
@@ -57,6 +76,10 @@ const Menu = {
 
         infoButton.addEventListener('click', openInfo);
         closeInfo.addEventListener('click', openInfo);
+        musicButton.addEventListener('click', muteToggle);
+        gameMenuButton.addEventListener('click', backToMenu);
+        gameMuteButton.addEventListener('click', muteToggle);
+
         startButton.addEventListener('click', (e) => {
             closeMainMenu();
             playSelectSound();

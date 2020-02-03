@@ -10,7 +10,6 @@
     <!-- Changing Favicon -->
     <link rel="icon" href="../assets/images/favicon.png">
 
-
     <!-- CSS FILLES -->
     <link rel="stylesheet" href="../assets/stylesheets/reset.css">
     <link rel="stylesheet" href="../assets/stylesheets/sidebar.css">
@@ -24,6 +23,11 @@
     <script src="main.js"></script>
 </head>
 <body>
+
+    <script src="https://www.gstatic.com/firebasejs/7.8.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.8.0/firebase-database.js"></script>
+    <!-- <script src="https://www.gstatic.com/firebasejs/7.8.0/firebase-analytics.js"></script> -->
+
     <div class="sidebar">
         <a href="#">Sebastian Mendo Lopez</a>
         <a href="mailto:sebastian.mendo1995@gmail.com"><i class="far fa-envelope fa-3x"></i></a>
@@ -74,26 +78,6 @@
                 <div class="high-score">
                     <h2>Global High Scores</h2>
                     <ul id='high-scores'>
-                        <li>
-                            Mendo
-                            <span class="right-score">15,000</span>
-                        </li>
-                        <li>
-                            Mendo
-                            <span class="right-score">15,000</span>
-                        </li>
-                        <li>
-                            Mendo
-                            <span class="right-score">15,000</span>
-                        </li>
-                        <li>
-                            Mendo
-                            <span class="right-score">15,000</span>
-                        </li>
-                        <li>
-                            Mendo
-                            <span class="right-score">15,000</span>
-                        </li>
                     </ul>
                 </div>
                 <nav class="menu-buttons">
@@ -104,6 +88,7 @@
             </section>
             <section id="game-over-menu" class="game-over close">
                 <button id="menu-button">Quit</button>
+                <button id="mute-button">Music</button>
                 <form class="high-score-form close">
                     <label>High Score!
                         <input id="name-input" type="text" maxlength="10" placeholder="Enter A Name">

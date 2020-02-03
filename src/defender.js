@@ -3,7 +3,7 @@ const Obstacle = require('./obstacle');
 const DEFENDER_HITBOX_OFFSET = {
     posX: 20,
     posY: 20,
-    sizeX: 100,
+    sizeX: 80,
     sizeY: 100,
 };
 

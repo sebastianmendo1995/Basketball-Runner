@@ -3,9 +3,11 @@ const Player = require('./player');
 const drawGameOver = require('./game_over');
 const Menu = require('./menu');
 const Background = require('./background');
+const Score = require('./score');
 
 class Game {
-    constructor(ctx, gameCanvas, foregroundCtx) {
+    constructor(database, ctx, gameCanvas, foregroundCtx) {
+        this.database = database;
         this.ctx = ctx;
         this.gameCanvas = gameCanvas;
         this.player = new Player({ position: [100, 310] });
@@ -14,19 +16,21 @@ class Game {
         this.nextSpawn = this.spawnRate + Math.floor(Math.random()*25)
         this.obstacles = [];
         this.muteMusic = false;
-
+        this.score = new Score();
         this.jump = this.jump.bind(this);
         this.draw = this.draw.bind(this);
         this.resetGame = this.resetGame.bind(this);
 
+        this.highScoreInput = document.getElementsByClassName("high-score-form")[0];
         this.setSounds();
         this.createBackground(foregroundCtx);
         this.setButtonListeners();
 
         Menu.menuButtons(this);
-    }
+    } 
 
     openMenu() {
+        this.score.setScore(this.database);
         if (!this.muteMusic) {
             this.menuMusic.volume = 0.7;
             this.menuMusic.play();
@@ -121,6 +125,7 @@ class Game {
         this.canReset = false;
         this.paused = false;
         this.defenders = 0;
+        this.score.score = 0;
         this.player.position = [100, 210];
         this.obstacles = [];
         this.maxObstacles = 3;
@@ -128,6 +133,13 @@ class Game {
     }
 
     stopGame() {
+        let highScore = this.score.checkHighScore(this.database);
+        if(highScore === true) {
+            this.highScoreInput.className = 'high-score-form';
+        }
+        setTimeout(() => {
+            drawGameOver(this.ctx);
+        }, 700);
         this.backgroundMusic.pause();
         this.gameOverSound.currentTime = 0;
         this.gameOverSound.volume = 0.8;
@@ -142,7 +154,7 @@ class Game {
     }
 
     resetGame(e) {
-        if (e.key === 's' && this.canReset && !this.paused) {
+        if (e.key === 'r' && this.canReset && !this.paused) {
             e.preventDefault();
             this.start();
         }
@@ -166,6 +178,7 @@ class Game {
             if (deleteIdx !== null) {
                 this.obstacles.splice(deleteIdx, 1);
             }
+            this.score.draw(this.ctx)
             this.foreground.draw();
         }
     }
