@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', ()=> {
   };
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
-  // firebase.analytics();
 
   let database = firebase.database();
   // let ref = database.ref('scores');
