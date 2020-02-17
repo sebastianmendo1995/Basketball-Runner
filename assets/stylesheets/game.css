@@ -64,7 +64,7 @@
   text-align: left;
 }
 
-.info-article > section > img {
+.info-article > section > div > img {
   height: 100px;
 }
 
@@ -100,6 +100,15 @@
 .info-article > section > button:hover{
   background-color: #f5e400d5;
 }
+
+.section-story > div,
+.how-to-play > div{
+  display: flex;
+  justify-content: center;
+}
+
+
+
 
 .main-menu-section {
   position: absolute;

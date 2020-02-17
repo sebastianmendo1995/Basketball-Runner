@@ -16,7 +16,7 @@ class Player {
 
         this.gameOver = false;
         this.jumpSound = new Audio('../assets/sounds/jump.mp3');
-        this.jumpSound.volume = 0.3;
+        this.jumpSound.volume = 0.1;
         this.jumping = false;
         this.jumpCount = 0;
     }

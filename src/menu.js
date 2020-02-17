@@ -21,8 +21,7 @@ const Menu = {
         const selectSound = new Audio('../assets/sounds/select.mp3');
         const gameMuteButton = document.getElementById('mute-button');
         const gameMenuButton = document.getElementById('menu-button');
-
-        selectSound.volume = 0.2;
+        
         const openInfo = (e) => {
             const infoArticle = document.getElementsByClassName('info-article')[0];
             if (infoArticle.className === 'info-article hidden') {
@@ -35,7 +34,7 @@ const Menu = {
                 game.pause();
             }
         }
-
+        
         const playSelectSound = () => {
             selectSound.pause();
             selectSound.currentTime = 0;

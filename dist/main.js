@@ -17355,8 +17355,7 @@ document.addEventListener('DOMContentLoaded', function () {
     measurementId: "G-RLMEW16HV2"
   }; // Initialize Firebase
 
-  firebase.initializeApp(firebaseConfig); // firebase.analytics();
-
+  firebase.initializeApp(firebaseConfig);
   var database = firebase.database(); // let ref = database.ref('scores');
   // let data = {
   //   name: "Abel",
@@ -17738,7 +17737,6 @@ var Menu = {
     var selectSound = new Audio('../assets/sounds/select.mp3');
     var gameMuteButton = document.getElementById('mute-button');
     var gameMenuButton = document.getElementById('menu-button');
-    selectSound.volume = 0.2;
 
     var openInfo = function openInfo(e) {
       var infoArticle = document.getElementsByClassName('info-article')[0];
@@ -17915,7 +17913,7 @@ function () {
     this.refreshFrame = 0;
     this.gameOver = false;
     this.jumpSound = new Audio('../assets/sounds/jump.mp3');
-    this.jumpSound.volume = 0.3;
+    this.jumpSound.volume = 0.1;
     this.jumping = false;
     this.jumpCount = 0;
   }
