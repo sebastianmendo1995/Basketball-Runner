@@ -20,6 +20,8 @@ class Game {
         this.jump = this.jump.bind(this);
         this.draw = this.draw.bind(this);
         this.resetGame = this.resetGame.bind(this);
+        this.time = 0;
+        this.defenderVelocity = 7.8;
 
         this.highScoreInput = document.getElementsByClassName("high-score-form")[0];
         this.setSounds();
@@ -27,7 +29,7 @@ class Game {
         this.setButtonListeners();
 
         Menu.menuButtons(this);
-    } 
+    }
 
     openMenu() {
         this.score.setScore(this.database);
@@ -35,6 +37,12 @@ class Game {
             this.menuMusic.volume = 0.7;
             this.menuMusic.play();
         }
+    }
+
+    timer() {
+        setInterval(() => {
+            this.time += 1
+        }, 1000)
     }
 
     toggleMute() {
@@ -71,9 +79,9 @@ class Game {
         this.gameCanvas.addEventListener('keydown', this.resetGame);
     }
 
-    pause() {
-        this.paused = true;
-    }
+    // pause() {
+    //     this.paused = true;
+    // }
 
     unpause() {
         this.paused = false;
@@ -103,7 +111,16 @@ class Game {
 
     generateObstacle(defender = false) {
         let obstacle = null;
-        obstacle = new Defender({ startPos: [820, 249], speed: 7.8 });
+        if (this.time > 10) {
+            this.defenderVelocity = 9.5
+        } else if (this.time > 15) {r
+            this.defenderVelocity = 11.5
+        } else if (this.time > 20) {
+            this.defenderVelocity = 13.5
+        } else if(this.time > 35) {
+            this.defenderVelocity = 15
+        }
+        obstacle = new Defender({ startPos: [820, 249], speed: this.defenderVelocity });
         return obstacle;
     }
 
@@ -129,6 +146,8 @@ class Game {
         this.player.position = [100, 210];
         this.obstacles = [];
         this.maxObstacles = 3;
+        this.time = 0
+        this.timer();
         this.draw();
     }
 

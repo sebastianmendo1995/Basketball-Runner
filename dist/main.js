@@ -17483,6 +17483,8 @@ function () {
     this.jump = this.jump.bind(this);
     this.draw = this.draw.bind(this);
     this.resetGame = this.resetGame.bind(this);
+    this.time = 0;
+    this.defenderVelocity = 7.8;
     this.highScoreInput = document.getElementsByClassName("high-score-form")[0];
     this.setSounds();
     this.createBackground(foregroundCtx);
@@ -17499,6 +17501,15 @@ function () {
         this.menuMusic.volume = 0.7;
         this.menuMusic.play();
       }
+    }
+  }, {
+    key: "timer",
+    value: function timer() {
+      var _this = this;
+
+      setInterval(function () {
+        _this.time += 1;
+      }, 1000);
     }
   }, {
     key: "toggleMute",
@@ -17536,12 +17547,10 @@ function () {
     value: function setButtonListeners() {
       this.gameCanvas.addEventListener('keydown', this.jump);
       this.gameCanvas.addEventListener('keydown', this.resetGame);
-    }
-  }, {
-    key: "pause",
-    value: function pause() {
-      this.paused = true;
-    }
+    } // pause() {
+    //     this.paused = true;
+    // }
+
   }, {
     key: "unpause",
     value: function unpause() {
@@ -17577,9 +17586,21 @@ function () {
     value: function generateObstacle() {
       var defender = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
       var obstacle = null;
+
+      if (this.time > 10) {
+        this.defenderVelocity = 9.5;
+      } else if (this.time > 15) {
+        r;
+        this.defenderVelocity = 11.5;
+      } else if (this.time > 20) {
+        this.defenderVelocity = 13.5;
+      } else if (this.time > 35) {
+        this.defenderVelocity = 15;
+      }
+
       obstacle = new Defender({
         startPos: [820, 249],
-        speed: 7.8
+        speed: this.defenderVelocity
       });
       return obstacle;
     }
@@ -17608,12 +17629,14 @@ function () {
       this.player.position = [100, 210];
       this.obstacles = [];
       this.maxObstacles = 3;
+      this.time = 0;
+      this.timer();
       this.draw();
     }
   }, {
     key: "stopGame",
     value: function stopGame() {
-      var _this = this;
+      var _this2 = this;
 
       var highScore = this.score.checkHighScore(this.database);
 
@@ -17622,17 +17645,17 @@ function () {
       }
 
       setTimeout(function () {
-        drawGameOver(_this.ctx);
+        drawGameOver(_this2.ctx);
       }, 700);
       this.backgroundMusic.pause();
       this.gameOverSound.currentTime = 0;
       this.gameOverSound.volume = 0.8;
       this.gameOverSound.play();
       setTimeout(function () {
-        drawGameOver(_this.ctx);
+        drawGameOver(_this2.ctx);
       }, 700);
       setTimeout(function () {
-        _this.canReset = true;
+        _this2.canReset = true;
       }, 1400);
       this.gameOver = true;
     }
@@ -17647,7 +17670,7 @@ function () {
   }, {
     key: "draw",
     value: function draw() {
-      var _this2 = this;
+      var _this3 = this;
 
       if (!this.gameOver && !this.paused) {
         requestAnimationFrame(this.draw);
@@ -17655,14 +17678,14 @@ function () {
         this.createObstacles();
         var deleteIdx = null;
         this.obstacles.forEach(function (obstacle, idx) {
-          obstacle.step(_this2.ctx);
+          obstacle.step(_this3.ctx);
 
           if (obstacle.outOfBounds()) {
             deleteIdx = idx;
           }
 
-          if (_this2.player.collidedWith(obstacle)) {
-            _this2.stopGame();
+          if (_this3.player.collidedWith(obstacle)) {
+            _this3.stopGame();
           }
         });
 
