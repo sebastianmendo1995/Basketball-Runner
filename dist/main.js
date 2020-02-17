@@ -17356,13 +17356,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }; // Initialize Firebase
 
   firebase.initializeApp(firebaseConfig);
-  var database = firebase.database(); // let ref = database.ref('scores');
-  // let data = {
-  //   name: "Abel",
-  //   score: 10500
-  // }
-  // ref.push(data)
-
+  var database = firebase.database();
   var game = new Game(database, canvasContext, gameCanvas, foregroundCanvasContext);
   game.openMenu();
 });
@@ -17812,7 +17806,6 @@ var Menu = {
     var submitNewHighScore = function submitNewHighScore() {
       var ref = game.database.ref('scores');
       var newName = document.getElementById('name-input').value;
-      debugger;
       var data = {
         name: newName,
         score: game.score.score
@@ -18099,7 +18092,6 @@ function () {
       this.highScores = {};
 
       for (var i = 0; i < keys.length; i++) {
-        // console.log(scores[keys[i]].score, scores[keys[i]].name)
         this.highScores[scores[keys[i]].score] = scores[keys[i]].name;
       }
 
