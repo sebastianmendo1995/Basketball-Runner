@@ -19,13 +19,21 @@ class Score {
         }
         const scores = data.val();
         let keys = Object.keys(data.val())
+
+        this.highScores = {}
+
         for(let i = 0; i < keys.length; i++){
-            let name = scores[keys[i]].name        
-            let score = scores[keys[i]].score   
+            this.highScores[scores[keys[i]].score] = scores[keys[i]].name 
+        }
+
+
+        Object.keys(this.highScores).sort(function (a, b) { return b - a }).slice(0,5).forEach(score => {
+            let name = this.highScores[score] 
             const liScore = document.createElement('li');
             liScore.innerHTML = `${name} <span class="right-score">${score}</span>`;
             scoreboard.appendChild(liScore)
-        }
+        })
+        
     }
 
     errData(err){
@@ -44,6 +52,7 @@ class Score {
         ctx.fillText(text, 640, 40);
         this.increaseScore();
     }
+
 
     increaseScore(){
         if(this.multiplier < 20){
@@ -65,7 +74,6 @@ class Score {
         }
     }
     
-
     timer(){
         setInterval( () => {
             this.time += 1

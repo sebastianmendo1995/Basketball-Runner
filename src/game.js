@@ -20,7 +20,7 @@ class Game {
         this.jump = this.jump.bind(this);
         this.draw = this.draw.bind(this);
         this.resetGame = this.resetGame.bind(this);
-        this.time = 0;
+        // this.time = 0;
         this.defenderVelocity = 7.8;
 
         this.highScoreInput = document.getElementsByClassName("high-score-form")[0];
@@ -79,9 +79,9 @@ class Game {
         this.gameCanvas.addEventListener('keydown', this.resetGame);
     }
 
-    // pause() {
-    //     this.paused = true;
-    // }
+    pause() {
+        this.paused = true;
+    }
 
     unpause() {
         this.paused = false;
@@ -110,7 +110,6 @@ class Game {
     }
 
     generateObstacle(defender = false) {
-        let obstacle = null;
         if (this.time > 10) {
             this.defenderVelocity = 9.5
         } else if (this.time > 15) {r
@@ -120,7 +119,7 @@ class Game {
         } else if(this.time > 35) {
             this.defenderVelocity = 15
         }
-        obstacle = new Defender({ startPos: [820, 249], speed: this.defenderVelocity });
+        let obstacle = new Defender({ startPos: [820, 249], speed: this.defenderVelocity });
         return obstacle;
     }
 

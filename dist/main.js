@@ -17482,8 +17482,8 @@ function () {
     this.score = new Score();
     this.jump = this.jump.bind(this);
     this.draw = this.draw.bind(this);
-    this.resetGame = this.resetGame.bind(this);
-    this.time = 0;
+    this.resetGame = this.resetGame.bind(this); // this.time = 0;
+
     this.defenderVelocity = 7.8;
     this.highScoreInput = document.getElementsByClassName("high-score-form")[0];
     this.setSounds();
@@ -17547,10 +17547,12 @@ function () {
     value: function setButtonListeners() {
       this.gameCanvas.addEventListener('keydown', this.jump);
       this.gameCanvas.addEventListener('keydown', this.resetGame);
-    } // pause() {
-    //     this.paused = true;
-    // }
-
+    }
+  }, {
+    key: "pause",
+    value: function pause() {
+      this.paused = true;
+    }
   }, {
     key: "unpause",
     value: function unpause() {
@@ -17585,7 +17587,6 @@ function () {
     key: "generateObstacle",
     value: function generateObstacle() {
       var defender = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-      var obstacle = null;
 
       if (this.time > 10) {
         this.defenderVelocity = 9.5;
@@ -17598,7 +17599,7 @@ function () {
         this.defenderVelocity = 15;
       }
 
-      obstacle = new Defender({
+      var obstacle = new Defender({
         startPos: [820, 249],
         speed: this.defenderVelocity
       });
@@ -17760,6 +17761,7 @@ var Menu = {
     var selectSound = new Audio('../assets/sounds/select.mp3');
     var gameMuteButton = document.getElementById('mute-button');
     var gameMenuButton = document.getElementById('menu-button');
+    var submitNewScore = document.getElementById('submit-highscore');
 
     var openInfo = function openInfo(e) {
       var infoArticle = document.getElementsByClassName('info-article')[0];
@@ -17807,6 +17809,17 @@ var Menu = {
       document.getElementById('game-canvas').focus();
     };
 
+    var submitNewHighScore = function submitNewHighScore() {
+      var ref = game.database.ref('scores');
+      var newName = document.getElementById('name-input').value;
+      debugger;
+      var data = {
+        name: newName,
+        score: game.score.score
+      };
+      ref.push(data);
+    };
+
     game.gameCanvas.addEventListener('keydown', function (e) {
       if (e.code === 'Escape' && game.gamePlaying) {
         e.preventDefault();
@@ -17818,6 +17831,7 @@ var Menu = {
     musicButton.addEventListener('click', muteToggle);
     gameMenuButton.addEventListener('click', backToMenu);
     gameMuteButton.addEventListener('click', muteToggle);
+    submitNewScore.addEventListener('click', submitNewHighScore);
     startButton.addEventListener('click', function (e) {
       closeMainMenu();
       playSelectSound();
@@ -18072,6 +18086,8 @@ function () {
   }, {
     key: "gotData",
     value: function gotData(data) {
+      var _this = this;
+
       var scoreboard = document.getElementById('high-scores'); //selecting the ul that will contain all the high scores
 
       while (scoreboard.firstChild) {
@@ -18080,14 +18096,21 @@ function () {
 
       var scores = data.val();
       var keys = Object.keys(data.val());
+      this.highScores = {};
 
       for (var i = 0; i < keys.length; i++) {
-        var name = scores[keys[i]].name;
-        var score = scores[keys[i]].score;
+        // console.log(scores[keys[i]].score, scores[keys[i]].name)
+        this.highScores[scores[keys[i]].score] = scores[keys[i]].name;
+      }
+
+      Object.keys(this.highScores).sort(function (a, b) {
+        return b - a;
+      }).slice(0, 5).forEach(function (score) {
+        var name = _this.highScores[score];
         var liScore = document.createElement('li');
         liScore.innerHTML = "".concat(name, " <span class=\"right-score\">").concat(score, "</span>");
         scoreboard.appendChild(liScore);
-      }
+      });
     }
   }, {
     key: "errData",
@@ -18134,10 +18157,10 @@ function () {
   }, {
     key: "timer",
     value: function timer() {
-      var _this = this;
+      var _this2 = this;
 
       setInterval(function () {
-        _this.time += 1;
+        _this2.time += 1;
       }, 1000);
     }
   }]);

@@ -21,7 +21,8 @@ const Menu = {
         const selectSound = new Audio('../assets/sounds/select.mp3');
         const gameMuteButton = document.getElementById('mute-button');
         const gameMenuButton = document.getElementById('menu-button');
-        
+        const submitNewScore = document.getElementById('submit-highscore');
+
         const openInfo = (e) => {
             const infoArticle = document.getElementsByClassName('info-article')[0];
             if (infoArticle.className === 'info-article hidden') {
@@ -66,6 +67,18 @@ const Menu = {
             document.getElementById('game-canvas').focus();
         }
 
+        const submitNewHighScore = () => {
+            let ref = game.database.ref('scores');
+            let newName = document.getElementById('name-input').value
+
+            let data = {
+                name: newName,
+                score: game.score.score
+            }
+            ref.push(data)
+            
+        }
+
         game.gameCanvas.addEventListener('keydown', (e) => {
             if (e.code === 'Escape' && game.gamePlaying) {
                 e.preventDefault();
@@ -78,6 +91,7 @@ const Menu = {
         musicButton.addEventListener('click', muteToggle);
         gameMenuButton.addEventListener('click', backToMenu);
         gameMuteButton.addEventListener('click', muteToggle);
+        submitNewScore.addEventListener('click', submitNewHighScore);
 
         startButton.addEventListener('click', (e) => {
             closeMainMenu();

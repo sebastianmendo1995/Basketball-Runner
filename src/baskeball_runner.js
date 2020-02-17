@@ -23,13 +23,6 @@ document.addEventListener('DOMContentLoaded', ()=> {
   firebase.initializeApp(firebaseConfig);
 
   let database = firebase.database();
-  // let ref = database.ref('scores');
-  // let data = {
-  //   name: "Abel",
-  //   score: 10500
-  // }
-
-  // ref.push(data)
 
   const game = new Game(
     database,
