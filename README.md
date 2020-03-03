@@ -1,7 +1,7 @@
 # Basketball Runner
 
 ## Preview
-[[ https://github.com/sebastianmendo1995/Basketball-Runner/blob/master/assets/images/game.png ]]
+![Game photo]( https://github.com/sebastianmendo1995/Basketball-Runner/blob/master/assets/images/game.png)
 
 You can test this project [here](https://sebastianmendo1995.github.io/Basketball-Runner/dist/)
 
